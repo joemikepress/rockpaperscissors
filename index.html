@@ -4,11 +4,78 @@
         <title>Rock Paper Scissors!</title>
     </head>
     <body>
-
-
+        <h2></h2>
+        <h2></h2>
+        <h1 id="status"></h1>
 
     <script>
+        function computerPlay() {
+            let randomInt = Math.floor(Math.random() * 3);
+
+            switch (randomInt) {
+                case 0:
+                    return "Rock";
+                    break;
+                case 1:
+                    return "Paper";
+                    break;
+                case 2:
+                    return "Scissors";
+                    break;
+            }
+        }
         
+        function playRound(playerSelection, computerSelection) {
+            
+            let win = false;
+
+            if ((playerSelection == "Rock") && (computerSelection == "Scissors")) {
+                win = true;
+            } else if ((playerSelection == "Paper") && (computerSelection == "Rock")) {
+                win = true;
+            } else if ((playerSelection =="Scissors") && (computerSelection == "Paper")) {
+                win = true;
+            } else if ((playerSelection == computerSelection)) {
+                win = "tie";
+            }
+
+            if (win == true) {
+                return `You Win! ${playerSelection} beats ${computerSelection}`;
+            } else if (win == false) {
+                return `You Lose! ${computerSelection} beats ${playerSelection}`;
+            } else {
+                return `It's a tie game!  You  and the computer both chose ${playerSelection}`;
+            }
+        }
+
+        let userChoice = prompt("Choose either Rock, Paper, or Scissors!");
+        let computerChoice = computerPlay();
+
+        //Display a replay button if game has been played
+        if (userChoice) {
+            let play = playRound(userChoice, computerChoice);
+
+            //Display user and computer choices
+            let displayChoices = document.getElementsByTagName("h2");
+            displayChoices[0].innerHTML = `You picked: ${userChoice}`;
+            displayChoices[1].innerHTML = `Computer picked: ${computerChoice}`;
+
+            //Dislpay a win or lose message
+            document.getElementById("status").innerHTML = play;
+
+            let replay = document.createElement("button");
+            replay.innerHTML = "Play Again!";
+
+            let att = document.createAttribute("onClick");
+            att.value = "window.location.reload();";
+            replay.setAttributeNode(att);
+
+            document.body.appendChild(replay);
+        } else if (userChoice == null) {
+            document.getElementById("status").innerHTML = "You need to pick either Rock Paper or Scissors first!";
+        }
+
+
     </script>
 
 
