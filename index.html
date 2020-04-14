@@ -9,6 +9,20 @@
         <h1 id="status"></h1>
 
     <script>
+
+        //Declare global variables
+        let round = 1;
+        let computerScore = 0;
+        let userScore = 0;
+        let gameTies = 0;
+
+        //Prompt user for their choice
+        function personPlay() {
+            let userChoice = prompt("Choose either Rock, Paper, or Scissors!");
+            return userChoice;
+        }
+
+        //Computer picks its choice
         function computerPlay() {
             let randomInt = Math.floor(Math.random() * 3);
 
@@ -25,8 +39,9 @@
             }
         }
         
-        function playRound(playerSelection, computerSelection) {
-            
+        //Determine whether win, lose, or tie
+        function winOrLose(playerSelection, computerSelection) {
+
             let win = false;
 
             if ((playerSelection == "Rock") && (computerSelection == "Scissors")) {
@@ -40,21 +55,19 @@
             }
 
             if (win == true) {
+                increaseUserScore();
                 return `You Win! ${playerSelection} beats ${computerSelection}`;
             } else if (win == false) {
+                increaseComputerScore();
                 return `You Lose! ${computerSelection} beats ${playerSelection}`;
             } else {
+                increaseGameTies();
                 return `It's a tie game!  You  and the computer both chose ${playerSelection}`;
             }
         }
 
-        let userChoice = prompt("Choose either Rock, Paper, or Scissors!");
-        let computerChoice = computerPlay();
 
-        //Display a replay button if game has been played
-        if (userChoice) {
-            let play = playRound(userChoice, computerChoice);
-
+        function updateText(userChoice, computerChoice, play) {
             //Display user and computer choices
             let displayChoices = document.getElementsByTagName("h2");
             displayChoices[0].innerHTML = `You picked: ${userChoice}`;
@@ -62,20 +75,77 @@
 
             //Dislpay a win or lose message
             document.getElementById("status").innerHTML = play;
-
-            let replay = document.createElement("button");
-            replay.innerHTML = "Play Again!";
-
-            let att = document.createAttribute("onClick");
-            att.value = "window.location.reload();";
-            replay.setAttributeNode(att);
-
-            document.body.appendChild(replay);
-        } else if (userChoice == null) {
-            document.getElementById("status").innerHTML = "You need to pick either Rock Paper or Scissors first!";
         }
 
+        function playButton() {
+            if (currentRound() <= 5) {
+                let replay = document.createElement("button");
+                replay.innerHTML = `Play Next Round`;
 
+                let att = document.createAttribute("onClick");
+                att.value = "playRound();";
+                replay.setAttributeNode(att);
+
+                document.body.appendChild(replay);
+            } else {
+
+            }
+        }
+
+        //Get current round
+        function currentRound() {
+            return round;
+        }
+
+        //Update round
+        function nextRound() {
+            return ++round;
+        }
+
+        function getUserScore() {
+            return userScore;
+        }
+
+        function getComputerScore() {
+            return computerScore;
+        }
+
+        function increaseUserScore() {
+            ++userScore;
+        }
+
+        function increaseComputerScore() {
+            ++computerScore;
+        }
+
+        function getGameTies() {
+            return gameTies;
+        }
+
+        function increaseGameTies() {
+            ++gameTies;
+        }
+
+        //Play a round of the game
+        function playRound() {
+            
+            if (currentRound() <= 5) {
+                let userChoice = personPlay();
+                let computerChoice = computerPlay();
+
+                let playMessage = winOrLose(userChoice, computerChoice);
+                nextRound();
+                updateText(userChoice, computerChoice, playMessage);
+                playButton();
+            }
+
+
+        }
+
+        //Start the game
+        if (round <= 5) {
+            playRound();
+        }
     </script>
 
 
