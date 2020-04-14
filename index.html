@@ -7,6 +7,9 @@
         <h2></h2>
         <h2></h2>
         <h1 id="status"></h1>
+        <h3 id="userScore"></h3>
+        <h3 id="computerScore"></h3>
+        <h3 id="tieGames"></h3>
 
     <script>
 
@@ -77,6 +80,12 @@
             document.getElementById("status").innerHTML = play;
         }
 
+        function updateGameStats() {
+            document.getElementById("userScore").innerHTML = `Your Score: ${getUserScore()}`;
+            document.getElementById("computerScore").innerHTML = `Computer Score: ${getComputerScore()}`;
+            document.getElementById("tieGames").innerHTML = `Tie Games: ${getGameTies()}`;
+        }
+
         function playButton() {
             if (currentRound() <= 5) {
                 let replay = document.createElement("button");
@@ -111,11 +120,11 @@
         }
 
         function increaseUserScore() {
-            ++userScore;
+            return ++userScore;
         }
 
         function increaseComputerScore() {
-            ++computerScore;
+            return ++computerScore;
         }
 
         function getGameTies() {
@@ -123,7 +132,7 @@
         }
 
         function increaseGameTies() {
-            ++gameTies;
+            return ++gameTies;
         }
 
         //Play a round of the game
@@ -136,6 +145,7 @@
                 let playMessage = winOrLose(userChoice, computerChoice);
                 nextRound();
                 updateText(userChoice, computerChoice, playMessage);
+                updateGameStats();
                 playButton();
             }
 
